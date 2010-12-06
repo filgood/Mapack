@@ -10,10 +10,12 @@ if exist ..\Build rd /q /s ..\Build
 md ..\Build
 
 pushd ..\Source
+if exist obj rd /q /s obj
 %FrameworkPath%\csc.exe /target:library /out:..\Build\Mapack.dll /doc:..\Build\Mapack.xml *.cs /keyfile:KeyPair.snk %1 
 copy ReadMe.htm ..\Build
 popd
 
 pushd ..\Example
+if exist obj rd /q /s obj
 %FrameworkPath%\csc.exe /target:exe /out:..\Build\Example.exe *.cs %1 /r:..\Build\Mapack.dll
 popd
