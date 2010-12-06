@@ -6,5 +6,14 @@ set FrameworkPath=%SystemRoot%\Microsoft.NET\Framework\v4.0.30319
 if exist "%FrameworkPath%\csc.exe" goto :start
 :start
 
-%FrameworkPath%\csc.exe /target:library /out:..\Build\Mapack.dll /doc:..\Build\Mapack.xml *.cs %1 /keyfile:KeyPair.snk
+if exist ..\Build rd /q /s ..\Build
+md ..\Build
+
+pushd ..\Source
+%FrameworkPath%\csc.exe /target:library /out:..\Build\Mapack.dll /doc:..\Build\Mapack.xml *.cs /keyfile:KeyPair.snk %1 
 copy ReadMe.htm ..\Build
+popd
+
+pushd ..\Example
+%FrameworkPath%\csc.exe /target:exe /out:..\Build\Example.exe *.cs %1 /r:..\Build\Mapack.dll
+popd
