@@ -126,12 +126,6 @@ namespace Mapack
 				throw new InvalidOperationException("Matrix is not positive definite.");
 			}
 
-			int dimension = L.Rows;
-			int count = value.Columns;
-
-			Matrix B = (Matrix) value.Clone();
-			double[][] l = L.Array;
-
 			// Solve L*Y = B;
             int dimension = L.Rows;
             int count = value.Columns;
