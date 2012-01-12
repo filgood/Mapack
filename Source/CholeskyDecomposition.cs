@@ -133,38 +133,37 @@ namespace Mapack
 			double[][] l = L.Array;
 
 			// Solve L*Y = B;
-			for (int k = 0; k < L.Rows; k++)
-			{
-				for (int i = k + 1; i < dimension; i++)
-				{
-					for (int j = 0; j < count; j++)
-					{
-						B[i,j] -= B[k,j] * l[i][k];
-					}
-				}
+            int dimension = L.Rows;
+            int count = value.Columns;
 
-				for (int j = 0; j < count; j++)
-				{
-					B[k,j] /= l[k][k];
-				}
-			}
+            Matrix B = (Matrix)value.Clone();
+            double[][] l = L.Array;
 
-			// Solve L'*X = Y;
-			for (int k = dimension - 1; k >= 0; k--)
-			{
-				for (int j = 0; j < count; j++)
-				{
-					B[k,j] /= l[k][k];
-				}
+            // Solve L*Y = B;
+            for (int k = 0; k < dimension; k++)
+            {
+                for (int j = 0; j < count; j++)
+                {
+                    for (int i = 0; i < k; i++)
+                    {
+                        B[k, j] -= B[i, j] * l[k][i];
+                    }
+                    B[k, j] /= l[k][k];
+                }
+            }
 
-				for (int i = 0; i < k; i++)
-				{
-					for (int j = 0; j < count; j++)
-					{
-						B[i,j] -= B[k,j] * l[k][i];
-					}
-				}
-			}
+            // Solve L'*X = Y;
+            for (int k = dimension - 1; k >= 0; k--)
+            {
+                for (int j = 0; j < count; j++)
+                {
+                    for (int i = k + 1; i < dimension; i++)
+                    {
+                        B[k, j] -= B[i, j] * L[i, k];
+                    }
+                    B[k, j] /= l[k][k];
+                }
+            }
 
 			return B;
 		}
